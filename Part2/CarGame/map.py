@@ -1,6 +1,3 @@
-# Self Driving Car
-
-# Importing the libraries
 import numpy as np
 from random import random, randint
 import matplotlib.pyplot as plt
@@ -41,7 +38,7 @@ brain = Dqn(5,3,0.9)
 action2rotation = [0,5,-5]
 last_reward = 0
 scores = []
-im = CoreImage("./images/masked_map.png")
+im = CoreImage(r"C:\Users\gunak\OneDrive\Desktop\ERV1\ERA-V1-Session-24-main\Part2\CarGame\images\MASK1.png")
 
 # textureMask = CoreImage(source="./kivytest/simplemask1.png")
 
@@ -54,7 +51,7 @@ def init():
     global goal_y
     global first_update
     sand = np.zeros((longueur,largeur))
-    img = PILImage.open("./images/masked_map_rotate.png").convert('L')
+    img = PILImage.open(r"C:\Users\gunak\OneDrive\Desktop\ERV1\ERA-V1-Session-24-main\Part2\CarGame\images\mask.png").convert('L')
     sand = np.asarray(img)/255
     goal_x = 1400
     goal_y = 150
@@ -238,7 +235,7 @@ class MyPaintWidget(Widget):
             length = 0
             sand[int(touch.x),int(touch.y)] = 1
             img = PILImage.fromarray(sand.astype("uint8")*255)
-            img.save("./images/masked_map_rotate.jpg")
+            img.save(r"C:\Users\gunak\OneDrive\Desktop\ERV1\ERA-V1-Session-24-main\Part2\CarGame\images\sand.jpg")
 
     def on_touch_move(self, touch):
         global length, n_points, last_x, last_y

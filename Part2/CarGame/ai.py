@@ -20,13 +20,13 @@ class Network(nn.Module):
         super(Network, self).__init__()
         self.input_size = input_size
         self.nb_action = nb_action
-        self.fc1 = nn.Linear(input_size, 50)
-        self.fc2 = nn.Linear(50, 30)
+        self.fc1 = nn.Linear(input_size, 30)
+        self.fc2 = nn.Linear(30,30)
         self.fc3 = nn.Linear(30, nb_action)
     
     def forward(self, state):
         x = F.relu(self.fc1(state))
-        x = F.relu(self.fc2(x))
+        q_values = F.relu(self.fc2(x))
         q_values = self.fc3(x)
         return q_values
 
@@ -60,10 +60,9 @@ class Dqn():
         self.last_state = torch.Tensor(input_size).unsqueeze(0)
         self.last_action = 0
         self.last_reward = 0
-        self.temperature = 100
     
     def select_action(self, state):
-        probs = F.softmax(self.model(Variable(state, volatile = True))*self.temperature) # T=100
+        probs = F.softmax(self.model(Variable(state, volatile = True))*100) # T=100
         action = probs.multinomial(1)
         return action.data[0,0]
     
