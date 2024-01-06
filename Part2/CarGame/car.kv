@@ -2,7 +2,7 @@
 # ref: https://kivy.org/docs/tutorials/pong.html
 
 <Car>:
-    size: 28, 17
+    size: 20, 10
     origin: 10, 5
     canvas:
         PushMatrix
@@ -12,14 +12,14 @@
         Rectangle:
             pos: self.pos
             size: self.size
-            source: "./images/car.png"
+            source: ".\images\car.png"
         PopMatrix
 
 <Ball1>:
     size: 10,10
     canvas:
         Color:
-            rgba: 1.0, 0.0, 0, 0.3
+            rgba: 0.48,0.97,0.74,0.3
         Ellipse:
             pos: self.pos
             size: self.size
@@ -27,7 +27,7 @@
     size: 10,10
     canvas:
         Color:
-            rgba: 1.0, 0.0, 0.0, 0.3
+            rgba: 0.48,0.97,0.74,0.3
         Ellipse:
             pos: self.pos
             size: self.size
@@ -36,32 +36,21 @@
     size: 10,10
     canvas:
         Color:
-            rgba: 1.0, 0.0, 0.0, 0.3
+            rgba: 0.48,0.97,0.74,0.3
         Ellipse:
             pos: self.pos
             size: self.size
-
-<GoalPost>:
-    size: 100, 100
-    canvas:
-        Color:
-            rgba: 1.0, 1.0, 1.0, 1.0
-        Rectangle:
-            pos: self.pos
-            size: self.size
-            source: "./images/pink-flag.png"
 
 <Game>:
     car: game_car
     ball1: game_ball1
     ball2: game_ball2
     ball3: game_ball3
-    goalpost: goal_post
     canvas:
         Rectangle:
             pos: self.pos
-            size: 2788, 1304
-            source: "./images/citymap.png"
+            size: 1275, 597
+            source: ".\images\citymap.png"
 
     Car:
         id: game_car
@@ -75,9 +64,3 @@
     Ball3:
         id: game_ball3
         center: self.parent.center
-
-    GoalPost:
-        id: goal_post
-        center: self.parent.center
-
-
