@@ -1,3 +1,6 @@
+# Self Driving Car
+
+# Importing the libraries
 import numpy as np
 from random import random, randint
 import matplotlib.pyplot as plt
@@ -15,8 +18,6 @@ from kivy.clock import Clock
 from kivy.core.image import Image as CoreImage
 from PIL import Image as PILImage
 from kivy.graphics.texture import Texture
-from kivy.core.window import Window
-
 
 # Importing the Dqn object from our AI in ai.py
 from ai import Dqn
@@ -24,8 +25,8 @@ from ai import Dqn
 # Adding this line if we don't want the right click to put a red point
 Config.set('input', 'mouse', 'mouse,multitouch_on_demand')
 Config.set('graphics', 'resizable', False)
-Config.set('graphics', 'width', '2788')
-Config.set('graphics', 'height', '1304')
+Config.set('graphics', 'width', '1034')
+Config.set('graphics', 'height', '529')
 
 # Introducing last_x and last_y, used to keep the last point in memory when we draw the sand on the map
 last_x = 0
@@ -34,11 +35,11 @@ n_points = 0
 length = 0
 
 # Getting our AI, which we call "brain", and that contains our neural network that represents our Q-function
-brain = Dqn(5,3,0.9)
+brain = Dqn(5,3,1.9)
 action2rotation = [0,5,-5]
 last_reward = 0
 scores = []
-im = CoreImage(r"C:\Users\gunak\OneDrive\Desktop\ERV1\ERA-V1-Session-24-main\Part2\CarGame\images\MASK1.png")
+im = CoreImage(".\images\MASK1.png")
 
 # textureMask = CoreImage(source="./kivytest/simplemask1.png")
 
@@ -51,10 +52,10 @@ def init():
     global goal_y
     global first_update
     sand = np.zeros((longueur,largeur))
-    img = PILImage.open(r"C:\Users\gunak\OneDrive\Desktop\ERV1\ERA-V1-Session-24-main\Part2\CarGame\images\mask.png").convert('L')
+    img = PILImage.open(".\images\mask.png").convert('L')
     sand = np.asarray(img)/255
-    goal_x = 1400
-    goal_y = 150
+    goal_x = 1025
+    goal_y = 487
     first_update = False
     global swap
     swap = 0
@@ -110,22 +111,14 @@ class Ball2(Widget):
 class Ball3(Widget):
     pass
 
-class GoalPost(Widget):
-    pass
-
 # Creating the game class
 
 class Game(Widget):
-
-    '''def __init__(self):
-        super(Widget, self).__init__()
-        Window.size = (self.width / 2, self.height / 2)  # (1394, 652)'''
 
     car = ObjectProperty(None)
     ball1 = ObjectProperty(None)
     ball2 = ObjectProperty(None)
     ball3 = ObjectProperty(None)
-    goalpost = ObjectProperty(None)
 
     def serve_car(self):
         self.car.center = self.center
@@ -144,8 +137,8 @@ class Game(Widget):
         global swap
         
 
-        longueur = self.width+1
-        largeur = self.height+1
+        longueur = self.width
+        largeur = self.height
         if first_update:
             init()
 
@@ -161,8 +154,6 @@ class Game(Widget):
         self.ball1.pos = self.car.sensor1
         self.ball2.pos = self.car.sensor2
         self.ball3.pos = self.car.sensor3
-        self.goalpost.x = goal_x
-        self.goalpost.y = goal_y
 
         if sand[int(self.car.x),int(self.car.y)] > 0:
             self.car.velocity = Vector(0.5, 0).rotate(self.car.angle)
@@ -181,42 +172,25 @@ class Game(Widget):
         if self.car.x < 5:
             self.car.x = 5
             last_reward = -1
-            #self.car.move(5)
         if self.car.x > self.width - 5:
             self.car.x = self.width - 5
             last_reward = -1
-            #self.car.move(5)
         if self.car.y < 5:
             self.car.y = 5
             last_reward = -1
-            #self.car.move(5)
         if self.car.y > self.height - 5:
             self.car.y = self.height - 5
             last_reward = -1
-            #self.car.move(5)
 
         if distance < 25:
-            if swap == 0:
-                goal_x = 1400
-                goal_y = 150
-                swap = 1
-            elif swap == 1:
-                goal_x = 2224 #1764
-                goal_y = 1041 #651
-                swap = 2
-            else:
-                goal_x = 118
-                goal_y = 270
+            if swap == 1:
+                goal_x = 1025
+                goal_y = 487
                 swap = 0
-
-            self.goalpost.x = goal_x
-            self.goalpost.y = goal_y
-
-            '''
-            goal3:
-                x: 118
-                y: 270
-            '''
+            else:
+                goal_x = 9
+                goal_y = 85
+                swap = 1
         last_distance = distance
 
 # Adding the painting tools
@@ -235,7 +209,7 @@ class MyPaintWidget(Widget):
             length = 0
             sand[int(touch.x),int(touch.y)] = 1
             img = PILImage.fromarray(sand.astype("uint8")*255)
-            img.save(r"C:\Users\gunak\OneDrive\Desktop\ERV1\ERA-V1-Session-24-main\Part2\CarGame\images\sand.jpg")
+            img.save(".\images\sand.png")
 
     def on_touch_move(self, touch):
         global length, n_points, last_x, last_y
@@ -256,7 +230,7 @@ class MyPaintWidget(Widget):
 # Adding the API Buttons (clear, save and load)
 
 class CarApp(App):
-    Window.size = ( int(Config.get('graphics', 'width')) / 2, int(Config.get('graphics', 'height')) / 2 )  # (1394, 652)
+
     def build(self):
         parent = Game()
         parent.serve_car()
@@ -269,7 +243,7 @@ class CarApp(App):
         savebtn.bind(on_release = self.save)
         loadbtn.bind(on_release = self.load)
         parent.add_widget(self.painter)
-        #parent.add_widget(clearbtn)
+        parent.add_widget(clearbtn)
         parent.add_widget(savebtn)
         parent.add_widget(loadbtn)
         return parent
