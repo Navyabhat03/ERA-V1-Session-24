@@ -39,7 +39,7 @@ brain = Dqn(5,3,0.95)
 action2rotation = [0,5,-5]
 last_reward = 0
 scores = []
-im = CoreImage(r"C:\Users\gunak\OneDrive\Desktop\ERV1\session24\car_game\images\MASK1.PNG")
+im = CoreImage("\images\MASK1.PNG")
 
 # textureMask = CoreImage(source="./kivytest/simplemask1.png")
 
@@ -52,7 +52,7 @@ def init():
     global goal_y
     global first_update
     sand = np.zeros((longueur,largeur))
-    img = PILImage.open(r"C:\Users\gunak\OneDrive\Desktop\ERV1\session24\car_game\images\mask.png").convert('L')
+    img = PILImage.open("\images\mask.png").convert('L')
     sand = np.asarray(img)/255
     goal_x = 89
     goal_y = 170
@@ -222,7 +222,7 @@ class MyPaintWidget(Widget):
             length = 0
             sand[int(touch.x),int(touch.y)] = 1
             img = PILImage.fromarray(sand.astype("uint8")*255)
-            img.save(r"C:\Users\gunak\OneDrive\Desktop\ERV1\session24\car_game\images\sand.png")
+            img.save("\images\sand.png")
 
     def on_touch_move(self, touch):
         global length, n_points, last_x, last_y
